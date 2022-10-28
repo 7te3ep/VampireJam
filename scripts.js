@@ -18,8 +18,8 @@ import {Vampire} from "./modules/vampire.js";
 // def var
 
 let gameFrame = 1
-var gameSpeed = 10
-var baseSpeed = 10
+var gameSpeed = 15
+var baseSpeed = 15
 let player = new Player
 let vampire = new Vampire
 let background = new Background(0)
@@ -86,6 +86,12 @@ function handleBackground(){
 }
 
 function handlePlayer(){
+        if (playerPreviousPos.length <= 5){
+            playerPreviousPos.push(player.x)
+        }else {
+            playerPreviousPos.splice(0,1)
+            playerPreviousPos.push(player.x)
+        }
     player.update()
     player.draw()
     var rockCollision = false 
@@ -125,7 +131,7 @@ function handlePlayer(){
         }
     }
     if (energyCollision){
-        gameSpeed =15
+        gameSpeed =25
     }
 
     if (!energyCollision && !rockCollision){
@@ -134,10 +140,12 @@ function handlePlayer(){
 }
 
 function handleVampire(){
-    vampire.update(player.x,gameSpeed)
+    vampire.update(playerPreviousPos[0],gameSpeed)
     vampire.draw()
 }
 //animation loop
+
+//menuShow(true)
 
 let gameloop = setInterval(function(){
     //clear 
@@ -154,7 +162,14 @@ let gameloop = setInterval(function(){
     gameFrame ++
 
     // end condition
-    //clearInterval(gameloop);
+    if (player.x > vampire.x + vampire.width ||
+        player.x + player.width < vampire.x ||
+        player.y > vampire.y + vampire.height ||
+        player.y + player.height < vampire.y){
+    }else {
+        clearInterval(gameloop);
+        //menuShow(false)
+    }
 },32) 
 
 

@@ -19,7 +19,7 @@ class Vampire {
     }
     update(x,speed){
         this.x = x
-        this.y += Math.ceil((10 - speed)/1.5)
+        this.y += Math.ceil((15 - speed)/1.5)
     }
 
     draw(){
