@@ -14,16 +14,23 @@ class Rock {
         this.spriteSheet = new Image()
         this.spriteSheet.src = "pixil-frame-0.png"
         this.random = Math.random()
-        if (this.random <= 0.5){
+        if (this.random <= 0.33){
             this.frameX = 30
             this.frameY = 370
             this.frameW = 80
             this.frameH = 80
         }else {
-            this.frameX = 130
-            this.frameY = 380
-            this.frameW = 120
-            this.frameH = 70
+            if (this.random <= 0.66){
+                this.frameX = 120
+                this.frameY = 260
+                this.frameW = 120
+                this.frameH = 70
+            }else {
+                this.frameX = 130
+                this.frameY = 380
+                this.frameW = 120
+                this.frameH = 70
+            }
         }
     }
     draw(speed){
