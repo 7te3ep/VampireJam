@@ -33,9 +33,8 @@ function handleBlood(){
         bloodArray.push( new Blood(player.x)) 
     }
     for (let i = 0; i<bloodArray.length; i++){
-        if (bloodArray[i].y>= -50){
-            bloodArray[i].draw()
-        }else {
+        bloodArray[i].draw()
+        if (bloodArray[i].y<= -50){
             bloodArray.splice(i,1)
         }
     }
@@ -50,9 +49,8 @@ function handleRock(){
         rockArray.push( new Rock()) 
     }
     for (let i = 0; i<rockArray.length; i++){
-        if (rockArray[i].y>= -50){
-            rockArray[i].draw()
-        }else {
+        rockArray[i].draw()
+        if (rockArray[i].y<= -50){
             rockArray.splice(i,1)
         }
     }

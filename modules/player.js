@@ -40,7 +40,7 @@ class Player {
         this.dy = ""
         this.dx = ""
         this.spriteSheet = new Image()
-        this.spriteSheet.src = "../pixil-frame-0.png"
+        this.spriteSheet.src = ".././pixil-frame-0.png"
         this.frameX = 260
         this.frameY = 320
         this.animationSpeed = 10

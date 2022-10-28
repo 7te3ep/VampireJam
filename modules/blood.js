@@ -6,7 +6,7 @@ class Blood {
         this.x = x
         this.y = 450;
         this.spriteSheet = new Image()
-        this.spriteSheet.src = "../pixil-frame-0.png"
+        this.spriteSheet.src = ".././pixil-frame-0.png"
         this.random = Math.random()
         if (this.random <= 0.25){
             this.frameX = 660
