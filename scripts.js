@@ -10,14 +10,16 @@ import {Background} from "./modules/background.js";
 import {Blood} from "./modules/blood.js";
 import {Rock} from "./modules/rock.js";
 import {Player} from "./modules/player.js";
+import {Vampire} from "./modules/vampire.js";
 
 
 
 // def var
 
 let gameFrame = 1
-
+var gameSpeed = 10
 let player = new Player
+let vampire = new Vampire
 let background = new Background(0)
 let background1 = new Background(1000)
 var bloodArray = []
@@ -33,9 +35,12 @@ function handleBlood(){
         bloodArray.push( new Blood(player.x)) 
     }
     for (let i = 0; i <bloodArray.length; i++){
-        bloodArray[i].draw()
+        bloodArray[i].draw(gameSpeed)
+        if (bloodArray[i].y <= -50){
+            bloodArray.splice(i,1)
+            i --
+        }
     }
-    bloodArray = bloodArray.filter(item => item.y >= -50)
 }
 
 
@@ -47,13 +52,29 @@ function handleRock(){
         rockArray.push(new Rock()) 
     }
     for (let i = 0; i<rockArray.length; i++){
-        rockArray[i].draw()
+        rockArray[i].draw(gameSpeed)
+        if (rockArray[i].y <= -50){
+            rockArray.splice(i,1)
+            i --
         }
-        rockArray = rockArray.filter(item => item.y >= -50)
-    
     }
+}
 
+function handleBackground(){
+    background.draw(gameSpeed)
+    background1.draw(gameSpeed)
+}
 
+function handlePlayer(){
+    player.update()
+    player.draw()
+}
+
+function handleVampire(){
+    vampire.update(player.x)
+    vampire.draw()
+    console.log(vampire.x,vampire.y)
+}
 //animation loop
 
 let gameloop = setInterval(function(){
@@ -61,12 +82,11 @@ let gameloop = setInterval(function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
     // handle and draw all elements
-    background.draw()
-    background1.draw()
+    handleBackground()
     handleBlood()
-    player.update()
-    player.draw()
+    handlePlayer()
     handleRock()
+    handleVampire()
     // add gameframe
     gameFrame ++
 

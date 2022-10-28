@@ -4,6 +4,12 @@ import {c, ctx} from "./canvas.js";
 class Rock {
     constructor(){
         this.x = Math.random()*1000
+        if (this.x <= 50){
+            this.x += 50
+        }
+        if (this.x >= 450){
+            this.x -= 50
+        }
         this.y = 1000;
         this.spriteSheet = new Image()
         this.spriteSheet.src = "pixil-frame-0.png"
@@ -20,8 +26,8 @@ class Rock {
             this.frameH = 70
         }
     }
-    draw(){
-        this.y -= 10
+    draw(speed){
+        this.y -= speed
         c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
         //ctx.fillStyle = 'darkgreen'
         //ctx.fillRect(this.x, this.y, 50, 50);

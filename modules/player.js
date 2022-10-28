@@ -35,7 +35,7 @@ class Player {
         this.count = 0
         this.width = 5 * 10
         this.height = 13 *10
-        this.y = 500 - this.height
+        this.y = 600 - this.height
         this.x = 500 - this.width/2
         this.dy = ""
         this.dx = ""
@@ -49,10 +49,10 @@ class Player {
         this.dx = 0
 
         if (rightPressed){
-            this.dx = 10
+            this.dx = 15
         }
         if (leftPressed){
-            this.dx = -10
+            this.dx = -15
         }
         if (this.x + this.dx <= 950 - this.width/2 && this.x + this.dx >= 50 ){
             this.x = this.x + this.dx

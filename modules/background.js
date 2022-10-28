@@ -8,11 +8,11 @@ class Background {
         this.background = new Image()
         this.background.src = "background.png"
     }
-    draw(){
+    draw(speed){
         if (this.y <= -1000){
             this.y = 1000
         }
-        this.y -= 10
+        this.y -= speed
         c.getContext('2d').drawImage(this.background, this.x, this.y, 1000, 1010);
     }
 }
