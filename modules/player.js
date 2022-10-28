@@ -61,10 +61,7 @@ class Player {
 
     draw(){
         ctx.fillStyle = "black";
-        this.spriteSheet.addEventListener("load", (e) => {
-            ctx.drawImage(this.spriteSheet,this.frameX,this.frameY,50,140,this.x, this.y, 50,140);
-        })
-        ctx.drawImage(this.spriteSheet,this.frameX,this.frameY,50,140,this.x, this.y, 50,140);
+        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,50,140,this.x, this.y, 50,140);
         if (this.count == this.animationSpeed){
             if (this.frameX == 260){
                 this.frameX =  320

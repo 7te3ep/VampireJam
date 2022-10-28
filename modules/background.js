@@ -13,10 +13,7 @@ class Background {
             this.y = 1000
         }
         this.y -= 10
-        this.background.addEventListener("load", (e) => {
-            ctx.drawImage(this.background, this.x, this.y, 1000, 1010);
-        })
-        ctx.drawImage(this.background, this.x, this.y, 1000, 1010);
+        c.getContext('2d').drawImage(this.background, this.x, this.y, 1000, 1010);
     }
 }
 export {Background};
