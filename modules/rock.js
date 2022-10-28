@@ -6,7 +6,7 @@ class Rock {
         this.x = Math.random()*1000
         this.y = 1000;
         this.spriteSheet = new Image()
-        this.spriteSheet.src = ".././pixil-frame-0.png"
+        this.spriteSheet.src = "pixil-frame-0.png"
         this.random = Math.random()
         if (this.random <= 0.5){
             this.frameX = 30

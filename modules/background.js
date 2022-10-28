@@ -6,7 +6,7 @@ class Background {
         this.x = 0
         this.y = y;
         this.background = new Image()
-        this.background.src = ".././background.png"
+        this.background.src = "background.png"
     }
     draw(){
         if (this.y <= -1000){
