@@ -22,6 +22,9 @@ class Rock {
     }
     draw(){
         this.y -= 10
+        this.spriteSheet.addEventListener("load", (e) => {
+            ctx.drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
+        })
         ctx.drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
         //ctx.fillStyle = 'darkgreen'
         //ctx.fillRect(this.x, this.y, 50, 50);
