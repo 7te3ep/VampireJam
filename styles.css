@@ -2,6 +2,7 @@ canvas{
     border:1px solid black;
     width:800px;
     height:800px;
+    background-color: rgb(43, 65, 38);
 }
 
 body {

@@ -17,8 +17,9 @@ class Vampire {
         this.frameY = 170
         this.animationSpeed = 10
     }
-    update(x){
+    update(x,speed){
         this.x = x
+        this.y += Math.ceil((10 - speed)/1.5)
     }
 
     draw(){
@@ -37,7 +38,7 @@ class Vampire {
             }
             this.count = 0
         }
-        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.width,this.height,this.x-this.width/2.5, this.y, this.width,this.height);
+        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.width,this.height,this.x-this.width/2.3, this.y, this.width,this.height);
 
         this.count ++
     }

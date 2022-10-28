@@ -57,6 +57,8 @@ class Player {
         if (this.x + this.dx <= 950 - this.width/2 && this.x + this.dx >= 50 ){
             this.x = this.x + this.dx
         }
+
+        
     }
 
     draw(){
