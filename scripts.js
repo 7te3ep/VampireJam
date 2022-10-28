@@ -32,12 +32,10 @@ function handleBlood(){
         randomBloodSpawn = Math.ceil(Math.random()*100/4)
         bloodArray.push( new Blood(player.x)) 
     }
-    for (let i = 0; i<bloodArray.length; i++){
+    for (let i = 0; i <bloodArray.length; i++){
         bloodArray[i].draw()
-        if (bloodArray[i].y<= -50){
-            bloodArray.splice(i,1)
-        }
     }
+    bloodArray = bloodArray.filter(item => item.y >= -50)
 }
 
 
@@ -46,15 +44,15 @@ var randomRockSpawn = Math.ceil(Math.random()*100)
 function handleRock(){
     if (gameFrame % randomRockSpawn == 0){
         randomRockSpawn = Math.ceil(Math.random()*100)
-        rockArray.push( new Rock()) 
+        rockArray.push(new Rock()) 
     }
     for (let i = 0; i<rockArray.length; i++){
         rockArray[i].draw()
-        if (rockArray[i].y<= -50){
-            rockArray.splice(i,1)
         }
+        rockArray = rockArray.filter(item => item.y >= -50)
+    
     }
-}
+
 
 //animation loop
 
@@ -69,7 +67,6 @@ let gameloop = setInterval(function(){
     player.update()
     player.draw()
     handleRock()
-
     // add gameframe
     gameFrame ++
 

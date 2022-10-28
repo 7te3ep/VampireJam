@@ -36,7 +36,7 @@ class Blood {
     }
     draw(){
         this.y -= 10
-        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
+        ctx.drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
         //ctx.fillStyle = 'darkgreen'
         //ctx.fillRect(this.x, this.y, 50, 50);
     }
