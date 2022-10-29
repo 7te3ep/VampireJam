@@ -144,7 +144,7 @@ function handlePlayer(){
 
 function handleVampire(){
     vampire.update(playerPreviousPos[0],gameSpeed,baseSpeed)
-    vampire.draw()
+    vampire.draw(baseSpeed)
 }
 //animation loop
 
@@ -172,10 +172,10 @@ window.addEventListener("keydown", function(event) {
         
             // add gameframe
             gameFrame ++
-            if (gameFrame % 60 == 0){
+            if (gameFrame % 100 == 0 && baseSpeed < 40){
                 baseSpeed = baseSpeed + 1
+                console.log(baseSpeed)
             }
-            console.log(baseSpeed)
             scoreNumber = Math.ceil(gameFrame/10)
             // end condition
             if (player.x > vampire.x + vampire.width ||

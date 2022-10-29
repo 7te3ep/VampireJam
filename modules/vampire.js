@@ -19,13 +19,14 @@ class Vampire {
     }
     update(x,speed,baseSpeed){
         this.x = x
+        this.y += 0.5
         if (this.y >= -20 || baseSpeed >= speed){
         this.y += Math.ceil((baseSpeed - speed)/1.5)
     }
     }
 
     draw(){
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "black"; 
         if (this.count == this.animationSpeed){
             if (this.frameX == 280){
                 this.frameX =  300
