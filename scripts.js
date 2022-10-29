@@ -20,6 +20,8 @@ var music = new Audio('./8-bit-space-123218.mp3');
 var fin = new Image()
 fin.src = "./fin.png"
 
+var dead = new Image()
+dead.src = "./dead.png"
 // def var
 
 let isPlaying = false
@@ -224,17 +226,38 @@ window.addEventListener("keydown", function(event) {
                 player.x + player.width < vampire.x ||
                 player.y > vampire.y + vampire.height ||
                 player.y + player.height < vampire.y){
+                    if (scoreNumber>400){
+                        isPlaying =false
+                        clearInterval(gameloop);
+                        c.getContext('2d').drawImage(fin, 0, 0, 1000, 1010);
+                        setTimeout(menuShow,5000) 
+                        music.pause();
+                        music.currentTime = 0;
+                        gameSpeed = 10
+                        baseSpeed = 10
+                        player = new Player
+                        vampire = new Vampire
+                        background = new Background(0)
+                        background1 = new Background(1000)
+                        score = new Score()
+                        scoreNumber = 0
+                        bloodArray = []
+                        rockArray = []
+                        energyArray = []
+                        bibleCounter = 0
+                        bibleArray = []
+                        effectCouter = 0
+                        playerPreviousPos = []
+                        gameFrame = 0
+                        randomEnergy= 270
+                        randomBible= 220
+                    }
             }else {
                 isPlaying =false
                 clearInterval(gameloop);
-                if (scoreNumber<400){
-                    menuShow(scoreNumber)
-                    music.pause();
-                    music.currentTime = 0;
-                }else {
-                    c.getContext('2d').drawImage(fin, 0, 0, 1000, 1010);
-                    setTimeout(menuShow,5000) 
-                }
+                c.getContext('2d').drawImage(dead, 0, 0, 1000, 1010);
+                setTimeout(menuShow,5000) 
+                //menuShow(scoreNumber)
                 gameSpeed = 10
                 baseSpeed = 10
                 player = new Player
