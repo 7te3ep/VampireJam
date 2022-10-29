@@ -27,7 +27,6 @@ window.addEventListener("keyup", function(event) {
             break
     }
 });
-/*                                                      */
 
 
 class Player {
@@ -49,10 +48,10 @@ class Player {
         this.dx = 0
 
         if (rightPressed){
-            this.dx = 15
+            this.dx = 20
         }
         if (leftPressed){
-            this.dx = -15
+            this.dx = -20
         }
         if (this.x + this.dx <= 950 - this.width/2 && this.x + this.dx >= 50 ){
             this.x = this.x + this.dx
@@ -63,6 +62,8 @@ class Player {
 
     draw(){
         ctx.fillStyle = "black";
+        c.getContext('2d').drawImage(this.spriteSheet,760,220,80,100,this.x+30, this.y, 80,100);
+
         c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,50,140,this.x, this.y, 50,140);
         if (this.count == this.animationSpeed){
             if (this.frameX == 260){

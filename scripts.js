@@ -1,7 +1,7 @@
 //scripts.js
 //Main script for the page
 
-
+import { menuShow } from "./modules/menu.js";
 
 let canvas = document.getElementById('canvas')
 
@@ -12,18 +12,23 @@ import {Blood} from "./modules/blood.js";
 import {Rock} from "./modules/rock.js";
 import {Player} from "./modules/player.js";
 import {Vampire} from "./modules/vampire.js";
+import {Score} from "./modules/score.js";
 
 
 
 // def var
 
+let isPlaying = false
+
 let gameFrame = 1
-var gameSpeed = 15
-var baseSpeed = 15
+var gameSpeed = 10
+var baseSpeed = 10
 let player = new Player
 let vampire = new Vampire
 let background = new Background(0)
 let background1 = new Background(1000)
+let score = new Score()
+let scoreNumber = 0
 var bloodArray = []
 var rockArray = []
 var energyArray = []
@@ -52,7 +57,7 @@ var randomRockSpawn = Math.ceil(Math.random()*100)
 
 function handleRock(){
     if (gameFrame % randomRockSpawn == 0){
-        randomRockSpawn = Math.ceil(Math.random()*100)
+        randomRockSpawn = Math.ceil(50-(Math.random()*100)/2)
         rockArray.push(new Rock()) 
     }
     for (let i = 0; i<rockArray.length; i++){
@@ -64,11 +69,9 @@ function handleRock(){
     }
 }
 
-var randomEnergySpawn = Math.ceil(Math.random()*100)*6
 
 function handleEnergy(){
-    if (gameFrame % randomEnergySpawn == 0){
-        randomEnergySpawn = Math.ceil(Math.random()*100)*6
+    if (gameFrame % 100 == 0){
         energyArray.push(new Energy()) 
     }
     for (let i = 0; i<energyArray.length; i++){
@@ -105,7 +108,7 @@ function handlePlayer(){
         }
     }
     if (rockCollision){
-        gameSpeed =3
+        gameSpeed =baseSpeed/3
     }
     
     var energyCollision = false
@@ -131,7 +134,7 @@ function handlePlayer(){
         }
     }
     if (energyCollision){
-        gameSpeed =25
+        gameSpeed =baseSpeed*2
     }
 
     if (!energyCollision && !rockCollision){
@@ -140,37 +143,72 @@ function handlePlayer(){
 }
 
 function handleVampire(){
-    vampire.update(playerPreviousPos[0],gameSpeed)
+    vampire.update(playerPreviousPos[0],gameSpeed,baseSpeed)
     vampire.draw()
 }
 //animation loop
 
-//menuShow(true)
+function handleScore(){
+    score.draw(scoreNumber.toString())
+}
 
-let gameloop = setInterval(function(){
-    //clear 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-    // handle and draw all elements
-    handleBackground()
-    handleBlood()
-    handleRock()
-    handleEnergy()
-    handlePlayer()
-    handleVampire()
-    // add gameframe
-    gameFrame ++
-
-    // end condition
-    if (player.x > vampire.x + vampire.width ||
-        player.x + player.width < vampire.x ||
-        player.y > vampire.y + vampire.height ||
-        player.y + player.height < vampire.y){
-    }else {
-        clearInterval(gameloop);
-        //menuShow(false)
+menuShow(false)
+window.addEventListener("keydown", function(event) {
+    if (event.code == "Space" && !isPlaying){
+        isPlaying = true
+        let gameloop = setInterval(function(){
+            //clear 
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+        
+            // handle and draw all elements
+        
+            handleBackground()
+            handleBlood()
+            handleRock()
+            handleEnergy()
+            handlePlayer()
+            handleVampire()
+            handleScore()
+        
+            // add gameframe
+            gameFrame ++
+            if (gameFrame % 60 == 0){
+                baseSpeed = baseSpeed + 1
+            }
+            console.log(baseSpeed)
+            scoreNumber = Math.ceil(gameFrame/10)
+            // end condition
+            if (player.x > vampire.x + vampire.width ||
+                player.x + player.width < vampire.x ||
+                player.y > vampire.y + vampire.height ||
+                player.y + player.height < vampire.y){
+            }else {
+                isPlaying =false
+                clearInterval(gameloop);
+                menuShow(scoreNumber)
+                gameSpeed = 10
+                baseSpeed = 10
+                player = new Player
+                vampire = new Vampire
+                background = new Background(0)
+                background1 = new Background(1000)
+                score = new Score()
+                scoreNumber = 0
+                bloodArray = []
+                rockArray = []
+                energyArray = []
+                effectCouter = 0
+                playerPreviousPos = []
+                gameFrame = 0
+            }
+        },32) 
     }
-},32) 
+});
+
+
+// GAMELOOP
+
+
 
 
 

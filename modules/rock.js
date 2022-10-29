@@ -35,6 +35,7 @@ class Rock {
     }
     draw(speed){
         this.y -= speed
+        c.getContext('2d').drawImage(this.spriteSheet,420,280,80,80,this.x+ this.frameW/2, this.y-10, 80,80);
         c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
         //ctx.fillStyle = 'darkgreen'
         //ctx.fillRect(this.x, this.y, 50, 50);
