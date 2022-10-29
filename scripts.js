@@ -13,6 +13,7 @@ import {Rock} from "./modules/rock.js";
 import {Player} from "./modules/player.js";
 import {Vampire} from "./modules/vampire.js";
 import {Score} from "./modules/score.js";
+import {Bible} from "./modules/protection.js";
 
 var audio = new Audio('./pickupCoin.wav');
 var music = new Audio('./8-bit-space-123218.mp3');
@@ -32,9 +33,13 @@ let score = new Score()
 let scoreNumber = 0
 var bloodArray = []
 var rockArray = []
+var bibleArray = []
 var energyArray = []
 var effectCouter = 0
+var bibleCounter = 0
 var playerPreviousPos = []
+var randomEnergy= 200 + Math.ceil((Math.random()*100/2))
+var randomBible= 200 + Math.ceil(((Math.random()*100)/2))
 
 // handle
 var randomBloodSpawn = Math.ceil(Math.random()*100/4)
@@ -70,15 +75,28 @@ function handleRock(){
     }
 }
 
-
 function handleEnergy(){
-    if (gameFrame % 100 == 0){
+    if (gameFrame % randomEnergy == 0){
+    randomEnergy = 200 + Math.ceil((Math.random()*100/2))
         energyArray.push(new Energy()) 
     }
     for (let i = 0; i<energyArray.length; i++){
         energyArray[i].draw(gameSpeed)
         if (energyArray[i].y <= -50){
             energyArray.splice(i,1)
+            i --
+        }
+    }
+}
+function handleBible(){
+    if (gameFrame % randomBible == 0){
+        randomBible = 200 + Math.ceil(((Math.random()*100)/2))
+        bibleArray.push(new Bible()) 
+    }
+    for (let i = 0; i<bibleArray.length; i++){
+        bibleArray[i].draw(gameSpeed)
+        if (bibleArray[i].y <= -50){
+            bibleArray.splice(i,1)
             i --
         }
     }
@@ -97,7 +115,7 @@ function handlePlayer(){
             playerPreviousPos.push(player.x)
         }
     player.update()
-    player.draw()
+    player.draw(bibleCounter!=0)
     var rockCollision = false 
     for (let i = 0; i<rockArray.length; i++){
         if (player.x > rockArray[i].x + rockArray[i].frameW ||
@@ -109,14 +127,14 @@ function handlePlayer(){
         }
     }
     if (rockCollision){
-        gameSpeed =baseSpeed/3
+        gameSpeed =baseSpeed/4
     }
     
     var energyCollision = false
 
     if (effectCouter != 0){
         effectCouter ++
-        if (effectCouter <=20){
+        if (effectCouter <=15){
             energyCollision = true
         }else{
             effectCouter =0
@@ -142,10 +160,29 @@ function handlePlayer(){
     if (!energyCollision && !rockCollision){
         gameSpeed = baseSpeed
     }
+
+    if (bibleCounter != 0){
+        bibleCounter ++
+        if (bibleCounter >=20){
+            bibleCounter = 0
+        }
+    }
+
+    for (let i = 0; i<bibleArray.length; i++){
+        if (player.x > bibleArray[i].x + bibleArray[i].frameW ||
+            player.x + player.width < bibleArray[i].x ||
+            player.y > bibleArray[i].y + bibleArray[i].frameH ||
+            player.y + player.height < bibleArray[i].y){
+        }else {
+            bibleArray.splice(i--,1)
+            audio.play();
+            bibleCounter ++
+        }
+    }
 }
 
 function handleVampire(){
-    vampire.update(playerPreviousPos[0],gameSpeed,baseSpeed)
+    vampire.update(playerPreviousPos[0],gameSpeed,baseSpeed,bibleCounter!=0)
     vampire.draw(baseSpeed)
 }
 //animation loop
@@ -169,6 +206,7 @@ window.addEventListener("keydown", function(event) {
             handleBlood()
             handleRock()
             handleEnergy()
+            handleBible()
             handlePlayer()
             handleVampire()
             handleScore()
@@ -177,7 +215,6 @@ window.addEventListener("keydown", function(event) {
             gameFrame ++
             if (gameFrame % 100 == 0 && baseSpeed < 30){
                 baseSpeed = baseSpeed + 1
-                console.log(baseSpeed)
             }
             scoreNumber = Math.ceil(gameFrame/10)
             // end condition
@@ -200,14 +237,23 @@ window.addEventListener("keydown", function(event) {
                 bloodArray = []
                 rockArray = []
                 energyArray = []
+                bibleCounter = 0
+                bibleArray = []
                 effectCouter = 0
                 playerPreviousPos = []
                 gameFrame = 0
+                music.pause();
+                music.currentTime = 0;
+                randomEnergy= 200 + Math.ceil((Math.random()*100/2))
+                randomBible= 200 + Math.ceil(((Math.random()*100)/2))
             }
         },32) 
     }
 });
-
+music.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+}, false);
 
 // GAMELOOP
 

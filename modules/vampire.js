@@ -9,7 +9,7 @@ class Vampire {
         this.count = 0
         this.width = 270
         this.height = 80
-        this.y = 200
+        this.y = 50
         this.x = 500 - this.width/2
         this.spriteSheet = new Image()
         this.spriteSheet.src = "pixil-frame-0.png"
@@ -17,12 +17,15 @@ class Vampire {
         this.frameY = 170
         this.animationSpeed = 10
     }
-    update(x,speed,baseSpeed){
+    update(x,speed,baseSpeed,protection){
         this.x = x
-        this.y += 0.5
-        if (this.y >= -20 || baseSpeed >= speed){
+        this.y += 1
+        if (this.y >= -20 || baseSpeed >= speed && protection == false){
         this.y += Math.ceil((baseSpeed - speed)/1.5)
-    }
+        }
+        if (protection && this.y >= 50){
+            this.y -= 30
+        }
     }
 
     draw(){
