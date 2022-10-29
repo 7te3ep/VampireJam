@@ -19,9 +19,9 @@ class Vampire {
     }
     update(x,speed,baseSpeed,protection){
         this.x = x
-        this.y += 1
+        this.y += 0.5
         if (this.y >= -20 || baseSpeed >= speed && protection == false){
-        this.y += Math.ceil((baseSpeed - speed)/1.5)
+            this.y += Math.ceil((baseSpeed - speed)/1.5)
         }
         if (protection && this.y >= 50){
             this.y -= 30

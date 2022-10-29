@@ -38,8 +38,8 @@ var energyArray = []
 var effectCouter = 0
 var bibleCounter = 0
 var playerPreviousPos = []
-var randomEnergy= 200 + Math.ceil((Math.random()*100/2))
-var randomBible= 200 + Math.ceil(((Math.random()*100)/2))
+var randomEnergy= 270
+var randomBible= 220
 
 // handle
 var randomBloodSpawn = Math.ceil(Math.random()*100/4)
@@ -77,7 +77,7 @@ function handleRock(){
 
 function handleEnergy(){
     if (gameFrame % randomEnergy == 0){
-    randomEnergy = 200 + Math.ceil((Math.random()*100/2))
+        randomEnergy = 270
         energyArray.push(new Energy()) 
     }
     for (let i = 0; i<energyArray.length; i++){
@@ -90,7 +90,7 @@ function handleEnergy(){
 }
 function handleBible(){
     if (gameFrame % randomBible == 0){
-        randomBible = 200 + Math.ceil(((Math.random()*100)/2))
+        randomBible = 220
         bibleArray.push(new Bible()) 
     }
     for (let i = 0; i<bibleArray.length; i++){
@@ -127,7 +127,7 @@ function handlePlayer(){
         }
     }
     if (rockCollision){
-        gameSpeed =baseSpeed/4
+        gameSpeed =baseSpeed/2
     }
     
     var energyCollision = false
@@ -244,8 +244,8 @@ window.addEventListener("keydown", function(event) {
                 gameFrame = 0
                 music.pause();
                 music.currentTime = 0;
-                randomEnergy= 200 + Math.ceil((Math.random()*100/2))
-                randomBible= 200 + Math.ceil(((Math.random()*100)/2))
+                randomEnergy= 270
+                randomBible= 220
             }
         },32) 
     }
