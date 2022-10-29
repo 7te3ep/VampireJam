@@ -14,7 +14,8 @@ import {Player} from "./modules/player.js";
 import {Vampire} from "./modules/vampire.js";
 import {Score} from "./modules/score.js";
 
-
+var audio = new Audio('./pickupCoin.wav');
+var music = new Audio('./8-bit-space-123218.mp3');
 
 // def var
 
@@ -130,11 +131,12 @@ function handlePlayer(){
         }else {
             energyCollision = true
             energyArray.splice(i--,1)
+            audio.play();
             effectCouter ++
         }
     }
     if (energyCollision){
-        gameSpeed =baseSpeed*2
+        gameSpeed = baseSpeed*2
     }
 
     if (!energyCollision && !rockCollision){
@@ -155,6 +157,7 @@ function handleScore(){
 menuShow(false)
 window.addEventListener("keydown", function(event) {
     if (event.code == "Space" && !isPlaying){
+        music.play();
         isPlaying = true
         let gameloop = setInterval(function(){
             //clear 
@@ -172,7 +175,7 @@ window.addEventListener("keydown", function(event) {
         
             // add gameframe
             gameFrame ++
-            if (gameFrame % 100 == 0 && baseSpeed < 40){
+            if (gameFrame % 100 == 0 && baseSpeed < 30){
                 baseSpeed = baseSpeed + 1
                 console.log(baseSpeed)
             }
