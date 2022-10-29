@@ -17,6 +17,8 @@ import {Bible} from "./modules/protection.js";
 
 var audio = new Audio('./pickupCoin.wav');
 var music = new Audio('./8-bit-space-123218.mp3');
+var fin = new Image()
+fin.src = "./fin.png"
 
 // def var
 
@@ -213,7 +215,7 @@ window.addEventListener("keydown", function(event) {
         
             // add gameframe
             gameFrame ++
-            if (gameFrame % 100 == 0 && baseSpeed < 30){
+            if (gameFrame % 100 == 0 && baseSpeed < 25){
                 baseSpeed = baseSpeed + 1
             }
             scoreNumber = Math.ceil(gameFrame/10)
@@ -225,7 +227,14 @@ window.addEventListener("keydown", function(event) {
             }else {
                 isPlaying =false
                 clearInterval(gameloop);
-                menuShow(scoreNumber)
+                if (scoreNumber<400){
+                    menuShow(scoreNumber)
+                    music.pause();
+                    music.currentTime = 0;
+                }else {
+                    c.getContext('2d').drawImage(fin, 0, 0, 1000, 1010);
+                    setTimeout(menuShow,5000) 
+                }
                 gameSpeed = 10
                 baseSpeed = 10
                 player = new Player
@@ -242,8 +251,6 @@ window.addEventListener("keydown", function(event) {
                 effectCouter = 0
                 playerPreviousPos = []
                 gameFrame = 0
-                music.pause();
-                music.currentTime = 0;
                 randomEnergy= 270
                 randomBible= 220
             }
@@ -256,6 +263,7 @@ music.addEventListener('ended', function() {
 }, false);
 
 // GAMELOOP
+
 
 
 
