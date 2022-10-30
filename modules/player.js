@@ -65,7 +65,11 @@ class Player {
         ctx.fillStyle = "black";
         c.getContext('2d').drawImage(this.spriteSheet,760,220,80,100,this.x+30, this.y, 80,100);
         if (bible){
-            c.getContext('2d').drawImage(this.spriteSheet,590,20,190,180,this.x-70, this.y-30, 190,180);
+            if (this.frameX == 260){
+                c.getContext('2d').drawImage(this.spriteSheet,590,20,190,180,this.x-70, this.y-30, 190,180);
+            }else {
+                c.getContext('2d').drawImage(this.spriteSheet,820,30,170,170,this.x-60, this.y-20, 170,170);
+            }
         }
         c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,50,140,this.x, this.y, 50,140);
         if (this.count == this.animationSpeed){

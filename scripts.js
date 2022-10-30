@@ -16,12 +16,16 @@ import {Score} from "./modules/score.js";
 import {Bible} from "./modules/protection.js";
 
 var audio = new Audio('./pickupCoin.wav');
-var music = new Audio('./8-bit-space-123218.mp3');
+var sonMort = new Audio('./explosion.wav');
+var music = new Audio('./lefond.mp3');
 var fin = new Image()
 fin.src = "./fin.png"
 
 var dead = new Image()
 dead.src = "./dead.png"
+
+var shader = new Image()
+shader.src = "./shader.png"
 // def var
 
 let isPlaying = false
@@ -67,7 +71,7 @@ var randomRockSpawn = Math.ceil(Math.random()*100)
 
 function handleRock(){
     if (gameFrame % randomRockSpawn == 0){
-        randomRockSpawn = Math.ceil(50-(Math.random()*100)/2)
+        randomRockSpawn = Math.ceil(25-(Math.random()*100)/10)
         rockArray.push(new Rock()) 
     }
     for (let i = 0; i<rockArray.length; i++){
@@ -128,6 +132,7 @@ function handlePlayer(){
             player.y + player.height < rockArray[i].y){
         }else {
             rockCollision = true
+            
         }
     }
     if (rockCollision){
@@ -167,7 +172,7 @@ function handlePlayer(){
 
     if (bibleCounter != 0){
         bibleCounter ++
-        if (bibleCounter >=20){
+        if (bibleCounter >=60){
             bibleCounter = 0
         }
     }
@@ -195,7 +200,8 @@ function handleScore(){
     score.draw(scoreNumber.toString())
 }
 
-menuShow(false)
+menuShow(scoreNumber)
+
 window.addEventListener("keydown", function(event) {
     if (event.code == "Space" && !isPlaying){
         music.play();
@@ -209,12 +215,12 @@ window.addEventListener("keydown", function(event) {
             handleBackground()
             handleBlood()
             handleRock()
+            c.getContext('2d').drawImage(shader, 0, 0, 1000, 1010);
             handleEnergy()
             handleBible()
             handlePlayer()
             handleVampire()
             handleScore()
-        
             // add gameframe
             gameFrame ++
             if (gameFrame % 100 == 0 && baseSpeed < 25){
@@ -226,11 +232,14 @@ window.addEventListener("keydown", function(event) {
                 player.x + player.width < vampire.x ||
                 player.y > vampire.y + vampire.height ||
                 player.y + player.height < vampire.y){
-                    if (scoreNumber>400){
+                    if (scoreNumber>300){
                         isPlaying =false
                         clearInterval(gameloop);
                         c.getContext('2d').drawImage(fin, 0, 0, 1000, 1010);
-                        setTimeout(menuShow,5000) 
+                        setTimeout(function(){
+                            menuShow(scoreNumber)
+                            scoreNumber = 0
+                        },5000) 
                         music.pause();
                         music.currentTime = 0;
                         gameSpeed = 10
@@ -240,7 +249,6 @@ window.addEventListener("keydown", function(event) {
                         background = new Background(0)
                         background1 = new Background(1000)
                         score = new Score()
-                        scoreNumber = 0
                         bloodArray = []
                         rockArray = []
                         energyArray = []
@@ -254,10 +262,13 @@ window.addEventListener("keydown", function(event) {
                     }
             }else {
                 isPlaying =false
+                sonMort.play()
                 clearInterval(gameloop);
                 c.getContext('2d').drawImage(dead, 0, 0, 1000, 1010);
-                setTimeout(menuShow,5000) 
-                //menuShow(scoreNumber)
+                setTimeout(function(){
+                    menuShow(scoreNumber)
+                    scoreNumber = 0
+                },5000) 
                 gameSpeed = 10
                 baseSpeed = 10
                 player = new Player
@@ -265,7 +276,6 @@ window.addEventListener("keydown", function(event) {
                 background = new Background(0)
                 background1 = new Background(1000)
                 score = new Score()
-                scoreNumber = 0
                 bloodArray = []
                 rockArray = []
                 energyArray = []
