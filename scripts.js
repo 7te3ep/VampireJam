@@ -7,6 +7,7 @@ let canvas = document.getElementById('canvas')
 
 import {c, ctx} from "./modules/canvas.js";
 import {Background} from "./modules/background.js";
+import {Pickaxe} from "./modules/pickaxe.js";
 import {Energy} from "./modules/energy.js";
 import {Blood} from "./modules/blood.js";
 import {Rock} from "./modules/rock.js";
@@ -42,9 +43,12 @@ let scoreNumber = 0
 var bloodArray = []
 var rockArray = []
 var bibleArray = []
+var pickaxeArray = []
+var pickaxeCounter = 0
+var randomPickaxe= 10
 var energyArray = []
 var effectCouter = 0
-var bibleCounter = 0
+var bibleCounter = 430
 var playerPreviousPos = []
 var randomEnergy= 270
 var randomBible= 220
@@ -55,7 +59,7 @@ var randomBloodSpawn = Math.ceil(Math.random()*100/4)
 function handleBlood(){
     if (gameFrame % randomBloodSpawn == 0){
         randomBloodSpawn = Math.ceil(Math.random()*100/4)
-        bloodArray.push( new Blood(player.x)) 
+        bloodArray.push( new Blood(player.x))
     }
     for (let i = 0; i <bloodArray.length; i++){
         bloodArray[i].draw(gameSpeed)
@@ -75,7 +79,7 @@ function handleRock(){
         rockArray.push(new Rock()) 
     }
     for (let i = 0; i<rockArray.length; i++){
-        rockArray[i].draw(gameSpeed)
+        rockArray[i].draw(gameSpeed,pickaxeCounter!=0,player.x)
         if (rockArray[i].y <= -50){
             rockArray.splice(i,1)
             i --
@@ -105,6 +109,20 @@ function handleBible(){
         bibleArray[i].draw(gameSpeed)
         if (bibleArray[i].y <= -50){
             bibleArray.splice(i,1)
+            i --
+        }
+    }
+}
+
+function handlePickaxe(){
+    if (gameFrame % randomPickaxe == 0){
+        randomPickaxe = 430
+        pickaxeArray.push(new Pickaxe()) 
+    }
+    for (let i = 0; i<pickaxeArray.length; i++){
+        pickaxeArray[i].draw(gameSpeed)
+        if (pickaxeArray[i].y <= -50){
+            pickaxeArray.splice(i,1)
             i --
         }
     }
@@ -188,6 +206,25 @@ function handlePlayer(){
             bibleCounter ++
         }
     }
+
+    if (pickaxeCounter != 0){
+        pickaxeCounter ++
+        if (pickaxeCounter >=80){
+            pickaxeCounter = 0
+        }
+    }
+
+    for (let i = 0; i<pickaxeArray.length; i++){
+        if (player.x > pickaxeArray[i].x + pickaxeArray[i].frameW ||
+            player.x + player.width < pickaxeArray[i].x ||
+            player.y > pickaxeArray[i].y + pickaxeArray[i].frameH ||
+            player.y + player.height < pickaxeArray[i].y){
+        }else {
+            pickaxeArray.splice(i--,1)
+            audio.play();
+            pickaxeCounter ++
+        }
+    }
 }
 
 function handleVampire(){
@@ -218,6 +255,7 @@ window.addEventListener("keydown", function(event) {
             c.getContext('2d').drawImage(shader, 0, 0, 1000, 1010);
             handleEnergy()
             handleBible()
+            handlePickaxe()
             handlePlayer()
             handleVampire()
             handleScore()
@@ -259,6 +297,9 @@ window.addEventListener("keydown", function(event) {
                         gameFrame = 0
                         randomEnergy= 270
                         randomBible= 220
+                        pickaxeArray = []
+                        pickaxeCounter = 0
+                        randomPickaxe= 430
                     }
             }else {
                 isPlaying =false
@@ -286,6 +327,9 @@ window.addEventListener("keydown", function(event) {
                 gameFrame = 0
                 randomEnergy= 270
                 randomBible= 220
+                pickaxeArray = []
+                pickaxeCounter = 0
+                randomPickaxe= 430
             }
         },32) 
     }

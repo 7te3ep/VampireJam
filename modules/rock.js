@@ -33,7 +33,14 @@ class Rock {
             }
         }
     }
-    draw(speed){
+    draw(speed,pickaxe,playerPos){
+        if (pickaxe){
+            if (playerPos < this.x){
+                this.x += 10
+            }else {
+                this.x -= 10
+            }
+        }
         this.y -= speed
         c.getContext('2d').drawImage(this.spriteSheet,420,280,80,80,this.x+ this.frameW/2, this.y-10, 80,80);
         c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
