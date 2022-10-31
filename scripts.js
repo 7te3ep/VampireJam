@@ -70,7 +70,6 @@ function handleBlood(){
     }
 }
 
-
 var randomRockSpawn = Math.ceil(Math.random()*100)
 
 function handleRock(){
@@ -100,6 +99,7 @@ function handleEnergy(){
         }
     }
 }
+
 function handleBible(){
     if (gameFrame % randomBible == 0){
         randomBible = 220
@@ -156,7 +156,6 @@ function handlePlayer(){
     if (rockCollision){
         gameSpeed =baseSpeed/2
     }
-    
     var energyCollision = false
 
     if (effectCouter != 0){
@@ -181,19 +180,13 @@ function handlePlayer(){
         }
     }
     if (energyCollision){
-        gameSpeed = baseSpeed*2
+        gameSpeed = baseSpeed*2.5
     }
 
     if (!energyCollision && !rockCollision){
         gameSpeed = baseSpeed
     }
-
-    if (bibleCounter != 0){
-        bibleCounter ++
-        if (bibleCounter >=60){
-            bibleCounter = 0
-        }
-    }
+    bibleCounter = counter(bibleCounter,60)
 
     for (let i = 0; i<bibleArray.length; i++){
         if (player.x > bibleArray[i].x + bibleArray[i].frameW ||
@@ -206,13 +199,7 @@ function handlePlayer(){
             bibleCounter ++
         }
     }
-
-    if (pickaxeCounter != 0){
-        pickaxeCounter ++
-        if (pickaxeCounter >=80){
-            pickaxeCounter = 0
-        }
-    }
+    pickaxeCounter = counter(pickaxeCounter,80)
 
     for (let i = 0; i<pickaxeArray.length; i++){
         if (player.x > pickaxeArray[i].x + pickaxeArray[i].frameW ||
@@ -231,10 +218,19 @@ function handleVampire(){
     vampire.update(playerPreviousPos[0],gameSpeed,baseSpeed,bibleCounter!=0)
     vampire.draw(baseSpeed)
 }
-//animation loop
 
 function handleScore(){
     score.draw(scoreNumber.toString())
+}
+
+function counter(counterVariable,maxCounter){
+    if (counterVariable != 0){
+        counterVariable ++
+        if (counterVariable >= maxCounter){
+            counterVariable = 0
+        }
+    }
+    return counterVariable
 }
 
 menuShow(scoreNumber)
@@ -248,7 +244,6 @@ window.addEventListener("keydown", function(event) {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
         
             // handle and draw all elements
-        
             handleBackground()
             handleBlood()
             handleRock()
@@ -280,26 +275,7 @@ window.addEventListener("keydown", function(event) {
                         },5000) 
                         music.pause();
                         music.currentTime = 0;
-                        gameSpeed = 10
-                        baseSpeed = 10
-                        player = new Player
-                        vampire = new Vampire
-                        background = new Background(0)
-                        background1 = new Background(1000)
-                        score = new Score()
-                        bloodArray = []
-                        rockArray = []
-                        energyArray = []
-                        bibleCounter = 0
-                        bibleArray = []
-                        effectCouter = 0
-                        playerPreviousPos = []
-                        gameFrame = 0
-                        randomEnergy= 270
-                        randomBible= 220
-                        pickaxeArray = []
-                        pickaxeCounter = 0
-                        randomPickaxe= 430
+                        reset()
                     }
             }else {
                 isPlaying =false
@@ -309,27 +285,8 @@ window.addEventListener("keydown", function(event) {
                 setTimeout(function(){
                     menuShow(scoreNumber)
                     scoreNumber = 0
-                },5000) 
-                gameSpeed = 10
-                baseSpeed = 10
-                player = new Player
-                vampire = new Vampire
-                background = new Background(0)
-                background1 = new Background(1000)
-                score = new Score()
-                bloodArray = []
-                rockArray = []
-                energyArray = []
-                bibleCounter = 0
-                bibleArray = []
-                effectCouter = 0
-                playerPreviousPos = []
-                gameFrame = 0
-                randomEnergy= 270
-                randomBible= 220
-                pickaxeArray = []
-                pickaxeCounter = 0
-                randomPickaxe= 430
+                },2500) 
+                reset()
             }
         },32) 
     }
@@ -339,7 +296,28 @@ music.addEventListener('ended', function() {
     this.play();
 }, false);
 
-// GAMELOOP
+function reset(){
+    gameSpeed = 10
+    baseSpeed = 10
+    player = new Player
+    vampire = new Vampire
+    background = new Background(0)
+    background1 = new Background(1000)
+    score = new Score()
+    bloodArray = []
+    rockArray = []
+    energyArray = []
+    bibleCounter = 0
+    bibleArray = []
+    effectCouter = 0
+    playerPreviousPos = []
+    gameFrame = 0
+    randomEnergy= 270
+    randomBible= 220
+    pickaxeArray = []
+    pickaxeCounter = 0
+    randomPickaxe= 430
+}
 
 
 

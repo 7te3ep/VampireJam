@@ -4,12 +4,7 @@ import {c, ctx} from "./canvas.js";
 class Rock {
     constructor(){
         this.x = Math.random()*1000
-        if (this.x <= 50){
-            this.x += 50
-        }
-        if (this.x >= 450){
-            this.x -= 50
-        }
+
         this.y = 1000;
         this.spriteSheet = new Image()
         this.spriteSheet.src = "pixil-frame-0.png"
@@ -31,6 +26,12 @@ class Rock {
                 this.frameW = 120
                 this.frameH = 70
             }
+        }
+        if (this.x <= this.frameW){
+            this.x += Math.ceil(this.frameW/2.5)
+        }
+        if (this.x >= 1000-this.frameW){
+            this.x -= this.frameW
         }
     }
     draw(speed,pickaxe,playerPos){
