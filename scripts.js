@@ -32,8 +32,8 @@ shader.src = "./shader2.png"
 let isPlaying = false
 
 let gameFrame = 1
-var gameSpeed = 10
-var baseSpeed = 10
+var gameSpeed = 3
+var baseSpeed = 3
 let player = new Player
 let vampire = new Vampire
 let background = new Background(0)
@@ -278,14 +278,20 @@ window.addEventListener("keydown", function(event) {
         music.play();
         isPlaying = true
         let gameloop = setInterval(function(){
+            console.log(gameFrame)
             //clear 
             ctx.clearRect(0, 0, canvas.width, canvas.height)
-        
+            if (gameFrame == 200){
+                gameSpeed = 10
+                baseSpeed = 10
+            }
             // handle and draw all elements
             handleBackground()
             handleBlood()
             c.getContext('2d').drawImage(shader,player.x-1000, player.y-1000, 2000, 2000);
-            handleRock()
+            if (gameFrame > 150){
+                handleRock()
+            }
             handleEnergy()
             handleBible()
             handlePickaxe()
@@ -336,8 +342,8 @@ music.addEventListener('ended', function() {
 }, false);
 
 function reset(){
-    gameSpeed = 10
-    baseSpeed = 10
+    gameSpeed = 5
+    baseSpeed = 5
     player = new Player
     vampire = new Vampire
     background = new Background(0)
