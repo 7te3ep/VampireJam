@@ -2,8 +2,8 @@ import {c, ctx} from "./canvas.js";
 
 //Environment.js
 class Bible {
-    constructor(){
-        this.x = Math.random()*1000
+    constructor(x){
+        this.x = x
         if (this.x <= 50){
             this.x += 50
         }
@@ -17,10 +17,22 @@ class Bible {
         this.frameY = 470
         this.frameW = 90
         this.frameH = 110
+        this.animationCount = 0
+        this.animationUp = true
     }
-    draw(speed){
+    draw(speed,gameFrame){
         this.y -= speed
-        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
+        if (this.animationCount == 30){
+            this.animationUp = false
+        }if (this.animationCount == 0){
+            this.animationUp = true
+        }
+        if (this.animationUp){
+            this.animationCount += 2
+        }else {
+            this.animationCount -= 2
+        }
+        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y+(15-this.animationCount), this.frameW,this.frameH);
     }
 }
 export {Bible};

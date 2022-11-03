@@ -52,6 +52,9 @@ var bibleCounter = 430
 var playerPreviousPos = []
 var randomEnergy= 270
 var randomBible= 220
+var fivePreviousSpawnX = []
+var randomSpawnX = ""
+var backgroundFrame = 0
 
 // handle
 var randomBloodSpawn = Math.ceil(Math.random()*100/4)
@@ -75,7 +78,18 @@ var randomRockSpawn = Math.ceil(Math.random()*100)
 function handleRock(){
     if (gameFrame % randomRockSpawn == 0){
         randomRockSpawn = Math.ceil(25-(Math.random()*100)/10)
-        rockArray.push(new Rock()) 
+        randomSpawnX = Math.random()*1000
+        fivePreviousSpawnX.push(randomSpawnX)
+        if(fivePreviousSpawnX.length==2){
+            fivePreviousSpawnX.shift()
+        }
+        for (let i = 0; i < fivePreviousSpawnX.length;i++){
+            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
+                randomSpawnX = Math.random()*1000
+            }
+        }
+        
+        rockArray.push(new Rock(randomSpawnX)) 
     }
     for (let i = 0; i<rockArray.length; i++){
         rockArray[i].draw(gameSpeed,pickaxeCounter!=0,player.x)
@@ -89,10 +103,21 @@ function handleRock(){
 function handleEnergy(){
     if (gameFrame % randomEnergy == 0){
         randomEnergy = 270
-        energyArray.push(new Energy()) 
+        randomSpawnX = Math.random()*1000
+        fivePreviousSpawnX.push(randomSpawnX)
+        if(fivePreviousSpawnX.length==2){
+            fivePreviousSpawnX.shift()
+        }
+        for (let i = 0; i < fivePreviousSpawnX.length;i++){
+            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
+                randomSpawnX = Math.random()*1000
+            }
+        }
+        
+        energyArray.push(new Energy(randomSpawnX)) 
     }
     for (let i = 0; i<energyArray.length; i++){
-        energyArray[i].draw(gameSpeed)
+        energyArray[i].draw(gameSpeed,gameFrame)
         if (energyArray[i].y <= -50){
             energyArray.splice(i,1)
             i --
@@ -103,10 +128,21 @@ function handleEnergy(){
 function handleBible(){
     if (gameFrame % randomBible == 0){
         randomBible = 220
-        bibleArray.push(new Bible()) 
+        randomSpawnX = Math.random()*1000
+        fivePreviousSpawnX.push(randomSpawnX)
+        if(fivePreviousSpawnX.length==2){
+            fivePreviousSpawnX.shift()
+        }
+        for (let i = 0; i < fivePreviousSpawnX.length;i++){
+            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
+                randomSpawnX = Math.random()*1000
+            }
+        }
+        
+        bibleArray.push(new Bible(randomSpawnX)) 
     }
     for (let i = 0; i<bibleArray.length; i++){
-        bibleArray[i].draw(gameSpeed)
+        bibleArray[i].draw(gameSpeed,gameFrame)
         if (bibleArray[i].y <= -50){
             bibleArray.splice(i,1)
             i --
@@ -117,10 +153,21 @@ function handleBible(){
 function handlePickaxe(){
     if (gameFrame % randomPickaxe == 0){
         randomPickaxe = 430
-        pickaxeArray.push(new Pickaxe()) 
+        randomSpawnX = Math.random()*1000
+        fivePreviousSpawnX.push(randomSpawnX)
+        if(fivePreviousSpawnX.length==2){
+            fivePreviousSpawnX.shift()
+        }
+        for (let i = 0; i < fivePreviousSpawnX.length;i++){
+            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
+                randomSpawnX = Math.random()*1000
+            }
+        }
+        
+        pickaxeArray.push(new Pickaxe(randomSpawnX)) 
     }
     for (let i = 0; i<pickaxeArray.length; i++){
-        pickaxeArray[i].draw(gameSpeed)
+        pickaxeArray[i].draw(gameSpeed,gameFrame)
         if (pickaxeArray[i].y <= -50){
             pickaxeArray.splice(i,1)
             i --
@@ -129,8 +176,8 @@ function handlePickaxe(){
 }
 
 function handleBackground(){
-    background.draw(gameSpeed)
-    background1.draw(gameSpeed)
+    background.draw(gameSpeed,background1.x,backgroundFrame)
+    background1.draw(gameSpeed,background.x,backgroundFrame)
 }
 
 function handlePlayer(){
@@ -141,13 +188,13 @@ function handlePlayer(){
             playerPreviousPos.push(player.x)
         }
     player.update()
-    player.draw(bibleCounter!=0)
+    player.draw(bibleCounter!=0,effectCouter!=0,pickaxeCounter!=0,gameFrame%5==0,)
     var rockCollision = false 
     for (let i = 0; i<rockArray.length; i++){
-        if (player.x > rockArray[i].x + rockArray[i].frameW ||
-            player.x + player.width < rockArray[i].x ||
-            player.y > rockArray[i].y + rockArray[i].frameH ||
-            player.y + player.height < rockArray[i].y){
+        if (player.x -10> rockArray[i].x + rockArray[i].frameW ||
+            player.x + player.width -10< rockArray[i].x ||
+            player.y -10> rockArray[i].y + rockArray[i].frameH ||
+            player.y + player.height -10< rockArray[i].y){
         }else {
             rockCollision = true
             
@@ -160,7 +207,7 @@ function handlePlayer(){
 
     if (effectCouter != 0){
         effectCouter ++
-        if (effectCouter <=15){
+        if (effectCouter <=70){
             energyCollision = true
         }else{
             effectCouter =0
@@ -168,10 +215,10 @@ function handlePlayer(){
     }
 
     for (let i = 0; i<energyArray.length; i++){
-        if (player.x > energyArray[i].x + energyArray[i].frameW ||
-            player.x + player.width < energyArray[i].x ||
-            player.y > energyArray[i].y + energyArray[i].frameH ||
-            player.y + player.height < energyArray[i].y){
+        if (player.x -10> energyArray[i].x + energyArray[i].frameW ||
+            player.x + player.width -10< energyArray[i].x ||
+            player.y -10> energyArray[i].y + energyArray[i].frameH ||
+            player.y + player.height -10< energyArray[i].y){
         }else {
             energyCollision = true
             energyArray.splice(i--,1)
@@ -179,8 +226,8 @@ function handlePlayer(){
             effectCouter ++
         }
     }
-    if (energyCollision){
-        gameSpeed = baseSpeed*2.5
+    if (energyCollision && !rockCollision){
+            gameSpeed = baseSpeed*1.8
     }
 
     if (!energyCollision && !rockCollision){
@@ -189,23 +236,23 @@ function handlePlayer(){
     bibleCounter = counter(bibleCounter,60)
 
     for (let i = 0; i<bibleArray.length; i++){
-        if (player.x > bibleArray[i].x + bibleArray[i].frameW ||
-            player.x + player.width < bibleArray[i].x ||
-            player.y > bibleArray[i].y + bibleArray[i].frameH ||
-            player.y + player.height < bibleArray[i].y){
+        if (player.x -10> bibleArray[i].x + bibleArray[i].frameW ||
+            player.x + player.width -10< bibleArray[i].x ||
+            player.y -10> bibleArray[i].y + bibleArray[i].frameH ||
+            player.y + player.height -10< bibleArray[i].y){
         }else {
             bibleArray.splice(i--,1)
             audio.play();
             bibleCounter ++
         }
     }
-    pickaxeCounter = counter(pickaxeCounter,80)
+    pickaxeCounter = counter(pickaxeCounter,150)
 
     for (let i = 0; i<pickaxeArray.length; i++){
-        if (player.x > pickaxeArray[i].x + pickaxeArray[i].frameW ||
-            player.x + player.width < pickaxeArray[i].x ||
-            player.y > pickaxeArray[i].y + pickaxeArray[i].frameH ||
-            player.y + player.height < pickaxeArray[i].y){
+        if (player.x -10> pickaxeArray[i].x + pickaxeArray[i].frameW ||
+            player.x + player.width -10< pickaxeArray[i].x ||
+            player.y -10> pickaxeArray[i].y + pickaxeArray[i].frameH ||
+            player.y + player.height -10< pickaxeArray[i].y){
         }else {
             pickaxeArray.splice(i--,1)
             audio.play();
@@ -234,7 +281,6 @@ function counter(counterVariable,maxCounter){
 }
 
 menuShow(scoreNumber)
-
 window.addEventListener("keydown", function(event) {
     if (event.code == "Space" && !isPlaying){
         music.play();
@@ -256,6 +302,7 @@ window.addEventListener("keydown", function(event) {
             handleScore()
             // add gameframe
             gameFrame ++
+            backgroundFrame --
             if (gameFrame % 100 == 0 && baseSpeed < 25){
                 baseSpeed = baseSpeed + 1
             }

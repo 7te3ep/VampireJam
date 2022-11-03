@@ -1,9 +1,8 @@
 import {c, ctx} from "./canvas.js";
 
-//Environment.js
 class Energy {
-    constructor(){
-        this.x = Math.random()*1000
+    constructor(x){
+        this.x = x
         if (this.x <= 50){
             this.x += 50
         }
@@ -17,11 +16,24 @@ class Energy {
         this.frameY = 780
         this.frameW = 60
         this.frameH = 80
+        this.animationCount = 0
+        this.animationUp = true
     }
-    draw(speed){
+    draw(speed,gameFrame){
         this.y -= speed
+        if (this.animationCount == 30){
+            this.animationUp = false
+        }if (this.animationCount == 0){
+            this.animationUp = true
+        }
+        if (this.animationUp){
+            this.animationCount += 2
+        }else {
+            this.animationCount -= 2
+        }
+        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y+(15-this.animationCount), this.frameW,this.frameH);
+
         c.getContext('2d').drawImage(this.spriteSheet,580,740,60,90,this.x+20, this.y, 60,90);
-        c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y, this.frameW,this.frameH);
     }
 }
 export {Energy};

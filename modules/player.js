@@ -32,8 +32,8 @@ window.addEventListener("keyup", function(event) {
 class Player {
     constructor(){
         this.count = 0
-        this.width = 5 * 10
-        this.height = 13 *10
+        this.width = 50
+        this.height = 130 
         this.y = 600 - this.height
         this.x = 500 - this.width/2
         this.dy = ""
@@ -42,7 +42,10 @@ class Player {
         this.spriteSheet.src = "pixil-frame-0.png"
         this.frameX = 260
         this.frameY = 320
+        this.shadowX = 760
+        this.shadowY = 220
         this.animationSpeed = 10
+        this.particulArray = []
     }
     update(){
         this.dx = 0
@@ -60,10 +63,31 @@ class Player {
         
     }
 
-    draw(bible){
-
-        ctx.fillStyle = "black";
-        c.getContext('2d').drawImage(this.spriteSheet,760,220,80,100,this.x+30, this.y, 80,100);
+    draw(bible,pots,pickaxe,canSpawn){
+        if (pots ||bible || pickaxe){
+            if (canSpawn){
+                this.particulArray.push({x:this.x+((50-Math.random()*100)+this.width/2),y:this.y,yellow:bible,violet:pickaxe,green:pots})
+            }
+        }
+        if (this.particulArray.length != 0){
+            var randomDepop = 300- Math.random()*100/2
+            for (let i = 0; i<this.particulArray.length;i++){
+                this.particulArray[i].y -= 8
+                if (this.particulArray[i].green){
+                    c.getContext('2d').drawImage(this.spriteSheet,820,710,30,30,this.particulArray[i].x,this.particulArray[i].y, 30,30);
+                }else if (this.particulArray[i].violet) {
+                    c.getContext('2d').drawImage(this.spriteSheet,820,750,30,30,this.particulArray[i].x,this.particulArray[i].y, 30,30);
+                }else if (this.particulArray[i].yellow) {
+                    c.getContext('2d').drawImage(this.spriteSheet,860,750,30,30,this.particulArray[i].x,this.particulArray[i].y, 30,30);
+                }
+                if (this.particulArray[i].y <randomDepop){
+                    this.particulArray.splice(i,1)
+                    i -= 1
+                }
+            }
+        }
+        //shadow
+        c.getContext('2d').drawImage(this.spriteSheet,this.shadowX,this.shadowY,80,100,this.x+30, this.y, 80,100);
         if (bible){
             if (this.frameX == 260){
                 c.getContext('2d').drawImage(this.spriteSheet,590,20,190,180,this.x-70, this.y-30, 190,180);
@@ -75,8 +99,12 @@ class Player {
         if (this.count == this.animationSpeed){
             if (this.frameX == 260){
                 this.frameX =  320
+                this.shadowX = 760
+                this.shadowY = 220
             }else {
                 this.frameX =  260
+                this.shadowX = 870
+                this.shadowY = 560
             }
             this.count = 0
         }
