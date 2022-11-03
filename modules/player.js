@@ -51,10 +51,10 @@ class Player {
         this.dx = 0
 
         if (rightPressed){
-            this.dx = 20
+            this.dx =30
         }
         if (leftPressed){
-            this.dx = -20
+            this.dx = -30
         }
         if (this.x + this.dx <= 950 - this.width/2 && this.x + this.dx >= 50 ){
             this.x = this.x + this.dx
@@ -66,13 +66,14 @@ class Player {
     draw(bible,pots,pickaxe,canSpawn){
         if (pots ||bible || pickaxe){
             if (canSpawn){
-                this.particulArray.push({x:this.x+((50-Math.random()*100)+this.width/2),y:this.y,yellow:bible,violet:pickaxe,green:pots})
+                this.particulArray.push({x:this.x+((50-Math.random()*100)+this.width/2),y:this.y,yellow:bible,violet:pickaxe,green:pots,dx:2-(Math.random()*100)/20})
             }
         }
         if (this.particulArray.length != 0){
-            var randomDepop = 300- Math.random()*100/2
+            var randomDepop = 250- Math.random()*100/2
             for (let i = 0; i<this.particulArray.length;i++){
                 this.particulArray[i].y -= 8
+                this.particulArray[i].x += this.particulArray[i].dx
                 if (this.particulArray[i].green){
                     c.getContext('2d').drawImage(this.spriteSheet,820,710,30,30,this.particulArray[i].x,this.particulArray[i].y, 30,30);
                 }else if (this.particulArray[i].violet) {

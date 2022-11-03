@@ -26,7 +26,7 @@ var dead = new Image()
 dead.src = "./dead.png"
 
 var shader = new Image()
-shader.src = "./shader.png"
+shader.src = "./shader2.png"
 // def var
 
 let isPlaying = false
@@ -78,18 +78,8 @@ var randomRockSpawn = Math.ceil(Math.random()*100)
 function handleRock(){
     if (gameFrame % randomRockSpawn == 0){
         randomRockSpawn = Math.ceil(25-(Math.random()*100)/10)
-        randomSpawnX = Math.random()*1000
-        fivePreviousSpawnX.push(randomSpawnX)
-        if(fivePreviousSpawnX.length==2){
-            fivePreviousSpawnX.shift()
-        }
-        for (let i = 0; i < fivePreviousSpawnX.length;i++){
-            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
-                randomSpawnX = Math.random()*1000
-            }
-        }
         
-        rockArray.push(new Rock(randomSpawnX)) 
+        rockArray.push(new Rock(getXspawn())) 
     }
     for (let i = 0; i<rockArray.length; i++){
         rockArray[i].draw(gameSpeed,pickaxeCounter!=0,player.x)
@@ -103,18 +93,7 @@ function handleRock(){
 function handleEnergy(){
     if (gameFrame % randomEnergy == 0){
         randomEnergy = 270
-        randomSpawnX = Math.random()*1000
-        fivePreviousSpawnX.push(randomSpawnX)
-        if(fivePreviousSpawnX.length==2){
-            fivePreviousSpawnX.shift()
-        }
-        for (let i = 0; i < fivePreviousSpawnX.length;i++){
-            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
-                randomSpawnX = Math.random()*1000
-            }
-        }
-        
-        energyArray.push(new Energy(randomSpawnX)) 
+        energyArray.push(new Energy(getXspawn())) 
     }
     for (let i = 0; i<energyArray.length; i++){
         energyArray[i].draw(gameSpeed,gameFrame)
@@ -128,18 +107,7 @@ function handleEnergy(){
 function handleBible(){
     if (gameFrame % randomBible == 0){
         randomBible = 220
-        randomSpawnX = Math.random()*1000
-        fivePreviousSpawnX.push(randomSpawnX)
-        if(fivePreviousSpawnX.length==2){
-            fivePreviousSpawnX.shift()
-        }
-        for (let i = 0; i < fivePreviousSpawnX.length;i++){
-            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
-                randomSpawnX = Math.random()*1000
-            }
-        }
-        
-        bibleArray.push(new Bible(randomSpawnX)) 
+        bibleArray.push(new Bible(getXspawn())) 
     }
     for (let i = 0; i<bibleArray.length; i++){
         bibleArray[i].draw(gameSpeed,gameFrame)
@@ -153,18 +121,8 @@ function handleBible(){
 function handlePickaxe(){
     if (gameFrame % randomPickaxe == 0){
         randomPickaxe = 430
-        randomSpawnX = Math.random()*1000
-        fivePreviousSpawnX.push(randomSpawnX)
-        if(fivePreviousSpawnX.length==2){
-            fivePreviousSpawnX.shift()
-        }
-        for (let i = 0; i < fivePreviousSpawnX.length;i++){
-            if (randomSpawnX < fivePreviousSpawnX[i]-50 || randomSpawnX > fivePreviousSpawnX[i]+50){
-                randomSpawnX = Math.random()*1000
-            }
-        }
         
-        pickaxeArray.push(new Pickaxe(randomSpawnX)) 
+        pickaxeArray.push(new Pickaxe(getXspawn())) 
     }
     for (let i = 0; i<pickaxeArray.length; i++){
         pickaxeArray[i].draw(gameSpeed,gameFrame)
@@ -188,7 +146,7 @@ function handlePlayer(){
             playerPreviousPos.push(player.x)
         }
     player.update()
-    player.draw(bibleCounter!=0,effectCouter!=0,pickaxeCounter!=0,gameFrame%5==0,)
+    player.draw(bibleCounter!=0,effectCouter!=0,pickaxeCounter!=0,gameFrame%2==0,)
     var rockCollision = false 
     for (let i = 0; i<rockArray.length; i++){
         if (player.x -10> rockArray[i].x + rockArray[i].frameW ||
@@ -280,6 +238,40 @@ function counter(counterVariable,maxCounter){
     return counterVariable
 }
 
+function getXspawn(){
+    randomSpawnX = Math.ceil(Math.random()*1000)
+    if (randomSpawnX < 50){
+        randomSpawnX += 50
+    }if (randomSpawnX > 950){
+        randomSpawnX -= 50
+    }
+    if(fivePreviousSpawnX.length==3){
+        fivePreviousSpawnX.shift()
+    }
+    var itpossible = ""
+    while (itpossible == false){
+        itpossible = true
+        for (let i = 0; i < fivePreviousSpawnX.length;i++){
+            if (randomSpawnX > fivePreviousSpawnX[i]-250 && randomSpawnX < fivePreviousSpawnX[i]+250){
+                console.log(randomSpawnX,fivePreviousSpawnX[i])
+                itpossible = false
+            }
+        }
+        if (!itpossible){
+            randomSpawnX = Math.ceil(Math.random()*1000)
+            if (randomSpawnX < 50){
+                randomSpawnX += 50
+            }if (randomSpawnX > 950){
+                randomSpawnX -= 50
+            }
+        }else {
+            fivePreviousSpawnX.push(randomSpawnX)
+            return randomSpawnX
+        }
+    }
+}
+
+// GAME LOOP
 menuShow(scoreNumber)
 window.addEventListener("keydown", function(event) {
     if (event.code == "Space" && !isPlaying){
@@ -292,8 +284,8 @@ window.addEventListener("keydown", function(event) {
             // handle and draw all elements
             handleBackground()
             handleBlood()
+            c.getContext('2d').drawImage(shader,player.x-1000, player.y-1000, 2000, 2000);
             handleRock()
-            c.getContext('2d').drawImage(shader, 0, 0, 1000, 1010);
             handleEnergy()
             handleBible()
             handlePickaxe()

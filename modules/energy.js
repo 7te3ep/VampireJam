@@ -13,9 +13,9 @@ class Energy {
         this.spriteSheet = new Image()
         this.spriteSheet.src = "pixil-frame-0.png"
         this.frameX = 690
-        this.frameY = 780
-        this.frameW = 60
-        this.frameH = 80
+        this.frameY = 770
+        this.frameW = 80
+        this.frameH = 90
         this.animationCount = 0
         this.animationUp = true
     }
@@ -31,9 +31,9 @@ class Energy {
         }else {
             this.animationCount -= 2
         }
+        c.getContext('2d').drawImage(this.spriteSheet,840,790,150,150,this.x-43, this.y+(15-this.animationCount)-30, 150,150);
         c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y+(15-this.animationCount), this.frameW,this.frameH);
 
-        c.getContext('2d').drawImage(this.spriteSheet,580,740,60,90,this.x+20, this.y, 60,90);
     }
 }
 export {Energy};

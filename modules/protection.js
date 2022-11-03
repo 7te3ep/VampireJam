@@ -32,6 +32,7 @@ class Bible {
         }else {
             this.animationCount -= 2
         }
+        c.getContext('2d').drawImage(this.spriteSheet,840,790,150,150,this.x-30, this.y+(15-this.animationCount)-10, 150,150);
         c.getContext('2d').drawImage(this.spriteSheet,this.frameX,this.frameY,this.frameW,this.frameH,this.x, this.y+(15-this.animationCount), this.frameW,this.frameH);
     }
 }
