@@ -27,13 +27,16 @@ dead.src = "./dead.png"
 
 var shader = new Image()
 shader.src = "./shader2.png"
+
+var tuto = new Image()
+tuto.src = "./tuto.png"
 // def var
 
 let isPlaying = false
-
+var tutoY = 150
 let gameFrame = 1
-var gameSpeed = 3
-var baseSpeed = 3
+var gameSpeed = 5
+var baseSpeed = 5
 let player = new Player
 let vampire = new Vampire
 let background = new Background(0)
@@ -159,7 +162,7 @@ function handlePlayer(){
         }
     }
     if (rockCollision){
-        gameSpeed =baseSpeed/2
+        gameSpeed =baseSpeed/3
     }
     var energyCollision = false
 
@@ -291,13 +294,18 @@ window.addEventListener("keydown", function(event) {
             c.getContext('2d').drawImage(shader,player.x-1000, player.y-1000, 2000, 2000);
             if (gameFrame > 150){
                 handleRock()
+                handleEnergy()
+                handleBible()
+                handlePickaxe()
             }
-            handleEnergy()
-            handleBible()
-            handlePickaxe()
             handlePlayer()
             handleVampire()
-            handleScore()
+            if (gameFrame <= 200){
+                tutoY -= 5
+                c.getContext('2d').drawImage(tuto,0, tutoY, 1000, 1000);
+            }else {
+                handleScore()
+            }
             // add gameframe
             gameFrame ++
             backgroundFrame --
@@ -342,6 +350,7 @@ music.addEventListener('ended', function() {
 }, false);
 
 function reset(){
+    tutoY = 150
     gameSpeed = 5
     baseSpeed = 5
     player = new Player
